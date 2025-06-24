@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>水果超市结算</title>
+    <style>
+        body {
+            font-family: '微软雅黑', Arial, sans-serif;
+            background: #f7f7f7;
+        }
+        .container {
+            width: 480px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+            padding: 32px 36px 24px 36px;
+        }
+        h2 {
+            text-align: center;
+            color: #2d8cf0;
+            margin-bottom: 24px;
+        }
+        table {
+            margin: 0 auto 24px auto;
+            border-collapse: separate;
+            border-spacing: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-radius: 8px;
+            overflow: hidden;
+            width: 100%;
+            background: #fafcff;
+        }
+        table caption {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 6px;
+        }
+        table th, table td {
+            padding: 10px 0;
+            text-align: center;
+        }
+        table th {
+            background: #e6f7ff;
+            color: #2d8cf0;
+        }
+        form {
+            text-align: center;
+            margin-bottom: 18px;
+        }
+        label {
+            margin-right: 6px;
+        }
+        input[type="number"] {
+            width: 60px;
+            padding: 3px 6px;
+            border-radius: 4px;
+            border: 1px solid #d9d9d9;
+            margin-bottom: 8px;
+        }
+        select {
+            padding: 3px 8px;
+            border-radius: 4px;
+            border: 1px solid #d9d9d9;
+        }
+        button[type="submit"] {
+            background: #2d8cf0;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 32px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 2px 8px rgba(45,140,240,0.08);
+            transition: background 0.2s;
+        }
+        button[type="submit"]:hover {
+            background: #1766b3;
+        }
+        .result-area {
+            margin: 28px auto 0 auto;
+            padding: 18px 24px;
+            border-radius: 10px;
+            background: #f0faff;
+            border: 1.5px solid #2d8cf0;
+            width: 90%;
+            box-shadow: 0 2px 8px rgba(45,140,240,0.06);
+            text-align: center;
+        }
+        .result-area h2 {
+            color: #19be6b;
+            margin-bottom: 12px;
+        }
+        .result-area p {
+            font-size: 16px;
+            margin: 6px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>水果超市结算演示</h2>
+
+    <!-- 价格公示表格 -->
+    <table>
+        <caption>水果价格公示（元/斤）</caption>
+        <tr>
+            <th>水果名称</th>
+            <th>单价（元/斤）</th>
+        </tr>
+        <tr th:each="fruit : ${fruits}">
+            <td th:text="${fruit.name}"></td>
+            <td th:text="${fruit.pricePerKg}"></td>
+        </tr>
+    </table>
+
+    <form method="post" action="/checkout">
+        <label>顾客类型：</label>
+        <select name="customer">
+            <option value="A">A（苹果、草莓）</option>
+            <option value="B">B（苹果、草莓、芒果）</option>
+            <option value="C">C（草莓8折）</option>
+            <option value="D">D（草莓8折+满100减10）</option>
+        </select><br><br>
+        <label>苹果（斤）：</label><input type="number" name="apple" min="0" value="0"><br>
+        <label>草莓（斤）：</label><input type="number" name="strawberry" min="0" value="0"><br>
+        <label>芒果（斤）：</label><input type="number" name="mango" min="0" value="0"><br>
+        <button type="submit">结算</button>
+    </form>
+
+    <!-- 结算结果展示区，仅在有结果时显示 -->
+    <div class="result-area" th:if="${total != null}">
+        <h2>结算结果</h2>
+        <p>顾客类型：<span th:text="${customer}"></span></p>
+        <p>苹果（斤）：<span th:text="${apple}"></span></p>
+        <p>草莓（斤）：<span th:text="${strawberry}"></span></p>
+        <p>芒果（斤）：<span th:text="${mango}"></span></p>
+        <p><b>总价：<span th:text="${total}"></span> 元</b></p>
+    </div>
+</div>
+</body>
+</html> 
